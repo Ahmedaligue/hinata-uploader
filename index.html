@@ -371,7 +371,7 @@
 
         async function uploadImage(base64Image) {
             // Validate API key before attempting upload
-            if (API_KEY === 'c7e44749e3a1d761c4d296f9ed50cb92' || API_KEY === 'ty' || !API_KEY || API_KEY.length < 10) {
+            if (!API_KEY || API_KEY.length < 10 || API_KEY.includes('YOUR') || API_KEY.includes('مفتاحك')) {
                 statusMsg.style.display = 'block';
                 statusMsg.innerText = "Error: Please set your imgBB API key in the code!";
                 statusMsg.style.color = "#ffa500";
