@@ -6,7 +6,6 @@
     <title>Hinata Uploader</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* -- الأساسيات -- */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
         
         body {
@@ -19,7 +18,6 @@
             position: relative;
         }
 
-        /* -- صور الستيكرات -- */
         .sticker {
             position: fixed;
             z-index: 0;
@@ -49,7 +47,6 @@
             100% { transform: translateY(0px); }
         }
 
-        /* -- صندوق الرفع -- */
         .upload-box {
             background: #1a1a1a;
             border: 2px solid #333;
@@ -64,7 +61,6 @@
 
         h2 { color: #fff; margin-bottom: 25px; font-size: 24px; letter-spacing: 1px; }
 
-        /* منطقة السحب */
         .drop-zone {
             border: 2px dashed #444;
             border-radius: 15px;
@@ -85,7 +81,6 @@
         .icon { font-size: 40px; color: #555; margin-bottom: 10px; }
         input[type="file"] { display: none; }
 
-        /* معاينة الصورة */
         #preview-image {
             max-width: 100%;
             max-height: 150px;
@@ -94,7 +89,6 @@
             display: none;
         }
 
-        /* حالة التحميل */
         .status-msg {
             margin-top: 15px;
             color: #aaa;
@@ -102,7 +96,6 @@
             display: none;
         }
 
-        /* -- النتيجة -- */
         .result-area {
             margin-top: 20px;
             display: none;
@@ -147,7 +140,6 @@
 
         .copy-btn:hover { background: #c9184a; }
 
-        /* -- زر لصق الصورة -- */
         .paste-btn {
             margin-top: 20px;
             background: transparent;
@@ -166,19 +158,17 @@
             color: #ff4d6d;
         }
 
-        /* خانة اللصق */
         .paste-area {
             margin-top: 20px;
             border: 1px dashed #444;
             border-radius: 8px;
             padding: 15px;
             background: #0d0d0d;
-            display: none; /* مخفية مبدئياً */
+            display: none;
             position: relative;
             outline: none;
         }
 
-        /* تأثير وميض عند الاستعداد للصق */
         @keyframes pulse {
             0% { border-color: #ff4d6d; }
             50% { border-color: #444; }
@@ -195,7 +185,6 @@
             margin: 0;
         }
 
-        /* الرسالة التحذيرية أسفل الخانة */
         .paste-instruction {
             display: block;
             margin-top: 10px;
@@ -205,11 +194,10 @@
             width: 100%;
         }
 
-        /* -- زر الإلغاء (X) الجديد -- */
         .cancel-btn {
             position: absolute;
             top: 10px;
-            right: 10px; /* أقصى اليمين */
+            right: 10px;
             background: #ff0000;
             color: white;
             border: none;
@@ -220,7 +208,7 @@
             line-height: 25px;
             text-align: center;
             cursor: pointer;
-            display: none; /* مخفي مبدئياً */
+            display: none;
             z-index: 20;
             box-shadow: 0 2px 5px rgba(0,0,0,0.5);
             font-weight: bold;
@@ -232,7 +220,6 @@
             transform: scale(1.1);
         }
 
-        /* تجاوب الجوال */
         @media (max-width: 768px) {
             .sticker { width: 120px !important; }
             .upload-box { width: 90%; padding: 20px; }
@@ -241,7 +228,6 @@
 </head>
 <body>
 
-    <!-- ستيكرات أنمي -->
     <img src="https://files.catbox.moe/b3o5cs.jpg" class="sticker sticker-1" alt="Anime 1">
     <img src="https://files.catbox.moe/qk977p.jpg" class="sticker sticker-2" alt="Anime 2">
 
@@ -249,7 +235,6 @@
         <h2>Hinata Uploader</h2>
         
         <div class="drop-zone" id="dropZone">
-            <!-- زر الإلغاء (X) وضعته هنا داخل منطقة السحب -->
             <button class="cancel-btn" id="cancelBtn" onclick="removeImage()">×</button>
             
             <div class="icon" id="mainIcon">⚡</div>
@@ -267,13 +252,10 @@
             </div>
         </div>
 
-        <!-- زر لصق الصورة -->
         <button class="paste-btn" id="togglePasteBtn" onclick="togglePasteArea()">Paste Image</button>
 
-        <!-- منطقة اللصق -->
         <div class="paste-area" id="pasteArea" tabindex="0">
             <p>Paste Area (Click here first)</p>
-            <!-- رسالة التعليمات -->
             <span class="paste-instruction" id="pasteInstruction">Press Ctrl + V to paste image</span>
         </div>
     </div>
@@ -287,20 +269,15 @@
         const statusMsg = document.getElementById('statusMsg');
         const mainIcon = document.getElementById('mainIcon');
         const mainText = document.getElementById('mainText');
-        
-        // عناصر اللصق
         const togglePasteBtn = document.getElementById('togglePasteBtn');
         const pasteArea = document.getElementById('pasteArea');
         const pasteInstruction = document.getElementById('pasteInstruction');
-
-        // زر الإلغاء
         const cancelBtn = document.getElementById('cancelBtn');
 
-        const API_KEY = 'ضع هنا مفتاحك';
+        // ⚠️ REPLACE THIS WITH YOUR REAL IMGBB API KEY
+        const API_KEY = 'YOUR_IMGBB_API_KEY_HERE';
 
-        // --- أحداث السحب والضغط ---
         dropZone.addEventListener('click', (e) => {
-            // نتأكد أن الضغط لم يكن على زر الإلغاء
             if (e.target !== cancelBtn) {
                 fileInput.click();
             }
@@ -329,8 +306,6 @@
             }
         });
 
-        // --- خاصية اللصق ---
-        
         function togglePasteArea() {
             const isVisible = pasteArea.style.display === 'block';
             if (isVisible) {
@@ -363,7 +338,6 @@
             }
         });
 
-        // --- دالة معالجة الصورة (تعديل لإظهار زر X) ---
         function handleFile(file) {
             if (!file || !file.type.startsWith('image/')) return;
 
@@ -371,8 +345,6 @@
             mainText.style.display = 'none';
             resultArea.style.display = 'none';
             previewImg.style.display = 'none';
-            
-            // إظهار زر الإلغاء
             cancelBtn.style.display = 'block';
 
             const reader = new FileReader();
@@ -384,23 +356,29 @@
             reader.readAsDataURL(file);
         }
 
-        // --- دالة إلغاء الصورة (الجديدة) ---
         function removeImage() {
             previewImg.src = '';
             previewImg.style.display = 'none';
-            cancelBtn.style.display = 'none'; // إخفاء زر الإلغاء
+            cancelBtn.style.display = 'none';
             
             mainIcon.style.display = 'block';
             mainText.style.display = 'block';
             
             statusMsg.style.display = 'none';
             resultArea.style.display = 'none';
-            
-            // إعادة تعيين حقل الملف لاختيار نفس الصورة مرة أخرى إذا أراد
             fileInput.value = '';
         }
 
         async function uploadImage(base64Image) {
+            // Validate API key before attempting upload
+            if (API_KEY === 'c7e44749e3a1d761c4d296f9ed50cb92' || API_KEY === 'c7e44749e3a1d761c4d296f9ed50cb92' || !API_KEY || API_KEY.length < 10) {
+                statusMsg.style.display = 'block';
+                statusMsg.innerText = "Error: Please set your imgBB API key in the code!";
+                statusMsg.style.color = "#ffa500";
+                cancelBtn.style.display = 'block';
+                return;
+            }
+
             statusMsg.style.display = 'block';
             statusMsg.innerText = "Uploading...";
             statusMsg.style.color = "#aaa";
@@ -423,17 +401,17 @@
                     statusMsg.style.display = 'none';
                     linkUrl.value = link;
                     resultArea.style.display = 'block';
-                    
-                    // إخفاء زر الإلغاء بعد النجاح لأن الصورة اتحملت
                     cancelBtn.style.display = 'none';
                     
                     autoCopy(link);
                 } else {
-                    throw new Error('Upload failed');
+                    // Show actual API error message
+                    const apiError = data.error?.message || data.status_txt || 'Upload failed';
+                    throw new Error(apiError);
                 }
             } catch (error) {
                 console.error(error);
-                statusMsg.innerText = "Error! Try again.";
+                statusMsg.innerText = "Error: " + error.message;
                 statusMsg.style.color = "red";
                 setTimeout(() => {
                     statusMsg.style.display = 'none';
@@ -441,7 +419,7 @@
                     mainText.style.display = 'block';
                     previewImg.style.display = 'none';
                     cancelBtn.style.display = 'none';
-                }, 2000);
+                }, 4000);
             }
         }
 
